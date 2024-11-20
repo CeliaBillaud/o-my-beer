@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - O'My Beer!{% endblock %}
+
+{% block body %}
+    <form method="post" class="container mx-auto mt-2 text-left align-middle col-lg-3 col-sm-10">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        {% if app.user %}
+            <div class="mb-3 mt-3">
+                <p> Vous êtes déjà connecté en tant que {{ app.user.userIdentifier }}</p> <a class="text-secondary"href="{{ path('app_user_logout') }}" title="Deconnexion" role="button">Se déconnecter</a>
+            </div>
+        {% endif %}
+        <div class="d-flex justify-content-center mt-4 mb-3">
+            <img data-src="{{ asset('assets/img/ble.webp')}}" class="lazy img-fluid" alt="Logo" style="height: 80px; transform: rotate(-45deg)">
+            <h1 class="mt-4 mx-4 pt-2">Connexion</h1>
+            <img data-src="{{ asset('assets/img/ble.webp')}}" class="lazy img-fluid" alt="Logo" style="height: 80px; transform: rotate(45deg)">
+        </div>
+        <label for="username">Email</label>
+        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+        <label class="mt-3" for="password">Mot de passe</label>
+        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+
+        <input type="hidden" name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}"
+        >
+        <a class="text-decoration-none mt-2" href="{{path('app_forgot_password_request')}}" title="Réinitiliser le mot de passe"><small class="text-secondary"><i><b>Mot de passe oublié?</b></i></small></a>
+
+
+        {#
+            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+            See https://symfony.com/doc/current/security/remember_me.html
+
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" name="_remember_me"> Remember me
+                </label>
+            </div>
+        #}
+        <div class="d-flex flex-column">
+        
+        {# If you want to control the URL the user is redirected to on success #}
+        {# if referer contains "inscription" redirect to route else redirect to referer #}
+        <input type="hidden" name="_target_path" value={{ ("inscription" in app.request.headers.get('referer')) ? path('app_homepage') : app.request.headers.get('referer') }}> 
+
+        <button class="btn btn-secondary mt-2" type="submit" title="Connexion">
+            Se connecter
+        </button>
+        <a class="text-decoration-none mt-2" href="{{path('app_user_inscription')}}" title="Inscription"><small class="text-secondary">Pas encore de compte, <b>inscrivez-vous !</b></small></a>
+        </div>
+    </form>
+
+{% endblock %}

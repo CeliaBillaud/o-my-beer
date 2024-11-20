@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<main>
+
+		<!-- carousel -->
+			<div class="slider d-flex position-relative align-items-center justify-content-betweeen pt-5" style="height: 50vh;">
+				<div class="carousel-indicators align-items-end h-25 z-3 mb-0 gap-2">
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="slider_btn rounded-circle" style="height: 1.6rem; width: 1.6rem" aria-current="true" aria-label="Slide 1"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" class="slider_btn rounded-circle" style="height: 1.6rem; width: 1.6rem" aria-label="Slide 2"></button>
+					<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" class="slider_btn rounded-circle" style="height: 1.6rem; width: 1.6rem" aria-label="Slide 3"></button>
+				</div>
+
+			</div>
+			
+		<!-- cards -->
+
+		<h1 class="text-center text-secondary mt-4 mb-5">Avec O'My Beer découvrez et donnez votre avis sur des bières du monde entier !</h1>
+
+		<h2 class="text-center text-uppercase mt-5 mb-4">Vos bières préférées</h2>
+
+		<div class="container mt-3">
+			<div class="container">
+				<div class="row justify-content-md-around ">
+					<!-- Displaying 1 card for xs/sm screen, 2 cards for md/lg screens and 4 cards for xl screens  -->
+					<div class="col-12 col-md-6 col-xl-3 mb-3 d-flex justify-content-center">
+						<div class="card border-0 position-relative beer-element" style="width: 18rem;" data-id={{beerList[0].id}}>
+
+							{# including favorite and to test button #}
+							{% include 'front/_partials/_favorite_button.html.twig' with { beer: beerList[0] } %}
+
+							<a href="{{path('app_beer_read', {id : beerList[0].id})}}" title="En voir plus sur la bière {{ beerList[0].name }}" class="text-decoration-none text-reset">
+								<img src="{{ beerList[0].image }}" class="img-test card-img-top" alt="Image de la bière {{ beerList[0].name }}" fetchpriority="low" height="390px">
+								<div class="card-body text-center">
+									<p class="fs-5 fw-medium card-subtitle text-muted text-uppercase">{{beerList[0].brand.name}}</p>
+
+									<p class="fs-4 fw-medium card-title ">{{beerList[0].name}}</p>
+
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="col-12 col-md-6 col-xl-3 mb-3 d-none d-md-flex justify-content-center">
+						<div
+							class="card border-0 beer-element" style="width: 18rem;" data-id={{beerList[1].id}}>
+
+							{# including favorite and to test button #}
+							{% include 'front/_partials/_favorite_button.html.twig' with { beer: beerList[1] } %}
+
+							<a href="{{path('app_beer_read', {id : beerList[1].id})}}" title="En voir plus sur la bière {{ beerList[1].name }}" class="text-decoration-none text-reset">
+								<img data-src="{{ beerList[1].image }}" class="lazy card-img-top" alt="Image de la bière {{ beerList[1].name }}" height="390px">
+								<div class="card-body text-center">
+									<p class="fs-5 fw-medium card-subtitle text-muted text-uppercase">{{beerList[1].brand.name}}</p>
+									<p class="fs-4 fw-medium card-title">{{beerList[1].name}}</p>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					{% for i in 2..3 %}
+						<div class="col-xl-3 mb-3 d-none d-xl-flex justify-content-center">
+							<div
+								class="card border-0 beer-element" style="width: 18rem;" data-id={{beerList[i].id}}>
+
+								{# including favorite and to test button #}
+								{% include 'front/_partials/_favorite_button.html.twig' with { beer: beerList[i] } %}
+
+								<a href="{{path('app_beer_read', {id : beerList[i].id})}}" title="En voir plus sur la bière {{ beerList[i].name }}" class="text-decoration-none text-reset">
+									<img data-src="{{ beerList[i].image }}" class="lazy card-img-top" alt="Image de la bière {{ beerList[i].name }}" height="390px">
+									<div class="card-body text-center">
+										<p class="fs-5 fw-medium card-subtitle text-muted text-uppercase">{{beerList[i].brand.name}}</p>
+										<p class="fs-4 fw-medium card-title ">{{beerList[i].name}}</p>
+									</div>
+								</a>
+							</div>
+						</div>
+					{% endfor %}
+
+
+					<div class="col-12 d-flex justify-content-center">
+						<a href="{{ path('app_beer_list')}}" title="Voir toutes les bières" class="btn btn-primary text-white">Toutes nos bières</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<h2 class="text-center text-uppercase mt-5 mb-4">Les marques à la une</h2>
+
+		<div class="container mt-3">
+			<div class="container">
+				<div class="row  justify-content-md-around ">
+
+					<div class="col-12 col-md-6 col-xl-3 mb-3 d-flex justify-content-center">
+						<div class="card border-0" style="width: 18rem;">
+							<a href="{{path('app_brand_read', {slug : brandList[0].slug})}}" title="En voir plus sur la marque {{ brandList[0].name }}" class="text-decoration-none text-reset">
+								<div class="bg-white d-flex align-items-center" style="height: 18rem;">
+									<img data-src="{{ brandList[0].image }}" class="lazy card-img-top" fetchpriority="low" alt="Image de la marque {{ brandList[0].name }}">
+								</div>
+								<div class="card-body text-center">
+										<h3 class="card-title">{{brandList[0].name}}</h3>
+									</div>
+								</a>
+							</div>
+						</div>
+
+						<div class="col-12 col-md-6 col-xl-3 mb-3 d-none d-md-flex justify-content-center">
+							<div class="card border-0" style="width: 18rem;">
+								<a href="{{path('app_brand_read', {slug : brandList[1].slug})}}" title="En voir plus sur la marque {{ brandList[1].name }}" class="text-decoration-none text-reset">
+									<div class="bg-white d-flex align-items-center" style="height: 18rem;">
+										<img data-src="{{ brandList[1].image }}" class="lazy card-img-top" alt="Image de la marque {{ brandList[1].name }}">
+									</div>
+									<div class="card-body text-center">
+										<h3 class="card-title">{{brandList[1].name}}</h3>
+									</div>
+								</a>
+							</div>
+						</div>
+
+						{% for i in 2..3 %}
+							<div class="col-xl-3 mb-3 d-none d-xl-flex justify-content-center">
+								<div class="card border-0" style="width: 18rem;">
+									<a href="{{path('app_brand_read', {slug : brandList[i].slug})}}" title="En voir plus sur la marque {{ brandList[i].name }}" class="text-decoration-none text-reset">
+										<div class="bg-white d-flex align-items-center" style="height: 18rem;">
+											<img data-src="{{ brandList[i].image }}" class="lazy card-img-top" alt="Image de la marque {{ brandList[i].name }}">
+										</div>
+										<div class="card-body text-center">
+											<h3 class="card-title">{{brandList[i].name}}</h3>
+										</div>
+									</a>
+								</div>
+							</div>
+						{% endfor %}
+
+						<div class="col-md-12 d-flex justify-content-center">
+							<a href="{{ path('app_brand_list')}}" title="Voir toutes les marques" class="btn btn-primary text-white">Toutes les marques</a>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<script src="{{ asset('assets/js/slider-min.js') }}" type="module"></script>
+
+
+
+	{% endblock %}

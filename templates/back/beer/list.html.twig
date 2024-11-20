@@ -1,0 +1,54 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Nos bières
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-white text-center m-5">Nos bières</h1>
+	<a class="btn btn-nav btn-success border-2 border-light d-flex justify-content-center text-white w-25 mb-3 mx-auto " href="{{ path('app_back_beer_new') }}">Nouvelle bière</a>
+	<table class="table-responsive mx-auto p-2 col-10 col-sm-6 table-success text-center text-white" role="presentation">
+		<thead>
+			<tr>
+				<th class="text-primary fs-5 p-1">ID</th>
+				<th class="text-primary fs-5 p-1">NOM</th>
+				<th class="text-primary fs-5 p-1">STYLE</th>
+				<th class="text-primary fs-5 p-1">NOTE</th>
+				<th class="text-primary fs-5"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for beer in beers %}
+				<tr>
+					<td class="border-top">{{ beer.id }}</td>
+					<td class="border-top"> {{ beer.name }}</td>
+					<td class="border-top">{{ beer.style }}</td>
+					<td class="border-top">{{ beer.rating }}</td>
+					<td class="border-top">
+						<div class="d-flex gap-1 p-0 flex-column flex-sm-row  justify-content-center">
+							<a href="{{ path('app_back_beer_show', {'id': beer.id}) }}">
+								<button class="btn text-primary"><i class="bi bi-eye-fill" title="Voir"></i></button>
+							</a>
+							<a href="{{ path('app_back_beer_edit', {'id': beer.id}) }}">
+								<button class="btn text-primary"><i class="bi bi-pencil-fill" title="Modifier"></i></button>
+							</a>
+							{{ include('back/beer/_delete_form.html.twig') }}
+						</div>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="11">Pas de résultat</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+	{# {{ include('front/_partials/_pagination_list.html.twig')  }} #}
+	{% include 'front/_partials/_pagination.html.twig' with {
+    target_route: app.request.attributes.get('_route'),
+    target_params: app.request.query.all, 
+	selectedPage, maxPageCount}
+	 only %}
+
+{% endblock %}

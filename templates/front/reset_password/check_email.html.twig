@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rénitialisation de mot de passe - O'My Beer!{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center pt-5">C'est tout bon !</h1>
+<div class="container mx-auto align-middle my-3 col-lg-6 col-sm-10 mt-4">
+    <p>
+        Si un compte existe avec cette adresse email, un email vient de vous être envoyé avec un lien pour la réinitialisation de votre mot de passe. 
+        Ce lien expire dans {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+    </p>
+    <p> Si vous ne recevez pas cet email, pensez à vérifier dans votre dossier de spams ou <a href="{{ path('app_forgot_password_request') }}" title="Relancer la réinitialisation du mot de passe">essayez à nouveau</a>.</p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% apply inline_css %}
+<style>
+    h1 {
+        color: #007560;
+    }
+
+    footer {
+        font-weight: bold;
+    }
+    
+</style>
+
+<h1>Votre compte a bien été créé !</h1>
+
+<p>Youpi, un nouveau copain pour l'apéro ! <br>
+Vous pouvez désormais ajouter vos bières préférées en favoris mais aussi découvrir de nouvelles bières et les ajouter dans votre list "à tester".<br>
+Et n'oubliez pas de partager votre avis sur les bières de notre catalogue !<br><br>
+
+C'est presque l'heure de l'apéro, mais avant, confirmez votre email en cliquant sur le lien ci-dessous : <br>
+<a href="{{ signedUrl|raw }}">Confirmer mon Email</a>.<br>
+Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.<br><br>
+
+Prêt pour l'apéroooooooo ?</p>
+<br>
+
+<footer>
+L'équipe O'My Beer
+<br>
+{# @images refers to the twig namespace for images defined in twig.yaml #}
+<img width="100" src="{{ email.image('@images/logo.png') }}" alt="Logo">
+</footer>
+
+{% endapply %}
+
+
+

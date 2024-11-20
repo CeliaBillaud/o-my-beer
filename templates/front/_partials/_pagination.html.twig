@@ -1,0 +1,25 @@
+<nav class="col-lg-12 d-flex justify-content-center mt-3" role="navigation">
+    <ul class="pagination">
+        <li class="page-item {% if selectedPage == 1 %}disabled{% endif %}">
+            <a href="{{ path(target_route, target_params|merge({'page' : selectedPage - 1}) )}}" title="Page précédente" class="page-link" role="button">&laquo;</a>
+        </li>
+        {% for currentPage in 1..maxPageCount %}
+            {% if currentPage == 1 or currentPage == maxPageCount or currentPage == selectedPage or (currentPage > selectedPage - 2 and currentPage < selectedPage + 2) %}
+                <li 
+                    class="page-item {% if selectedPage == currentPage %} active {% endif %}"
+                    {% if selectedPage == currentPage %}aria-current="page"{% endif %}
+                >
+                    <a class="page-link" href="{{ path(target_route, target_params|merge({'page' : currentPage}))}}" title="Page actuelle" role="button">{{ currentPage}}</a>
+                </li>
+            {% elseif currentPage == selectedPage - 2 or currentPage == selectedPage + 2 %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" role="button">...</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        <li class="page-item {% if selectedPage == maxPageCount %}disabled{% endif %}">
+            <a class="page-link" href="{{ path(target_route, target_params|merge({'page' : selectedPage + 1}))}}" title="Page suivante" role="button">&raquo;</a>
+        </li>
+    </ul>
+</nav>
+

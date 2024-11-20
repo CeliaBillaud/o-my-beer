@@ -1,0 +1,224 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{beer.name}} - O'My Beer!{% endblock %}
+
+{% block body %}
+<div class="container mt-5 mb-5">
+    <div class="row d-flex justify-content-center">
+        <div class="row">
+            <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
+                {# images are made responsive with img-fluid  #}
+                <img data-src="{{beer.image}}" class="lazy img-fluid" alt="photo de la bière {{beer.name}}" style="max-height: 500px;"/>
+            </div>
+            <div class="col-md-6">
+                <div class="p-2">
+                    <div class="mt-4 mb-3 position-relative beer-element" data-id={{beer.id}}> 
+
+                        {#  TODO inclure dans partials #}
+                        {# {{ include('front/_partials/_favorite_button.html.twig') }} #}
+
+                        {% if is_granted("ROLE_USER") %}
+                        <div class="position-absolute top-0 end-0" >
+                            <i class="bi {{ (beer in app.user.beerFavorite) ? 'bi-heart-fill' : 'bi-heart' }} fs-2 text-primary favorite-icon pe-auto" 
+                            title="{{ (beer in app.user.beerFavorite) ? 'supprimer des' : 'ajouter aux' }} favoris"
+                            tabindex="0" 
+                            role="button"
+                            style="cursor: pointer;" ></i> 
+
+                            <i class="bi {{ (beer in app.user.beerTest) ? 'bi-bookmark-check-fill' : 'bi-bookmark-check' }} fs-2 text-primary test-icon pe-auto" 
+                            title="{{ (beer in app.user.beerTest) ? 'supprimer des' : 'ajouter aux' }} bières à tester"
+                            tabindex="0" 
+                            role="button"
+                            style="cursor: pointer;" ></i> 
+
+                            </div>
+                        {% else %}
+                            <div class="position-absolute top-0 end-0">
+                            <a href="{{ path('app_user_connexion')}}" class="text-decoration-none">
+                                <i class="bi bi-heart fs-3" title="ajouter en favoris" role="button"></i> 
+                            </a>
+
+                            <a href="{{ path('app_user_connexion', {id: beer.id})}}" class="text-decoration-none">
+                                <i class="bi bi-bookmark-check fs-3" title="ajouter à mes bières à tester" role="button"></i>
+                            </a>
+                            </div>
+                        {% endif %}
+
+
+
+
+                        <h1 class="text-uppercase col-10">{{beer.name}}</h1>
+                        <h2 class="text-uppercase text-muted fw-light">{{beer.brand.name}}</h2>
+            
+                        <div class="d-flex flex-row align-items-center"> 
+                            <p>{{beer.style}} | {{beer.alcohol}}&#37; vol.</p> 
+                        </div>
+
+                        {% if beer.rating is not empty %}
+                            <div class="d-flex mb-4 align-items-center" style="color: orange;">
+                                {% set stars = beer.rating %}
+                                {% for i in 1..5 %}
+                                    {% if stars >= 1 %}
+                                        <i class="bi bi-star-fill"></i>
+                                    {% elseif stars > 0 %}
+                                        <i class="bi bi-star-half"></i>
+                                    {% else %}
+                                        <i class="bi bi-star"></i>
+                                    {% endif %}
+                                    {% set stars = stars - 1 %}
+                                {% endfor %}
+                                <span class="ps-1">{{ beer.rating }}</span>
+                            </div>
+                        {% endif %}
+                    
+                        <span class="text-uppercase text-muted mb-1">Amertume | {{beer.ibu}} ibu</span>
+
+                        {# TODO changer largeur en fonction du responsive #}
+                        <div class="progress mb-2 col-12 col-lg-10 col-xl-8">
+                            <div class="progress-bar bg-secondary" role="progressbar" aria-label="Success example" style="width: {{(beer.ibu/120)*100}}%" aria-valuenow="{{beer.ibu}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+                        <span class="text-uppercase text-muted">Sucrosité | {{beer.blg}} blg</span>
+                        <div class="progress col-12 col-lg-10 col-xl-8">
+                            <div class="progress-bar bg-secondary" role="progressbar" aria-label="Success example" style="width: {{(beer.blg)}}%" aria-valuenow="{{beer.blg}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        
+                        <div class="col-12 col-lg-10 col-xl-8">
+                            <table class="table mt-3">
+                                <caption class="text-uppercase caption-top"> Détails </caption>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Type</th>
+                                        <td>{{beer.type.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Houblon</th>
+                                        <td>{{beer.hop}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Levure</th>
+                                        <td colspan="2">{{beer.yeast}}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Malt</th>
+                                        <td colspan="2">{{beer.malts}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                        
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="py-3 py-md-5 py-xl-8">
+            
+
+    {# Add review form : if user is connected and has not already posted a review #}
+        {% if is_granted("ROLE_USER") %}
+            {% set hasCommented = false %}
+            {% for beerReviewed in beer.reviews %}
+                {% if beerReviewed.user == app.user %}
+                    {% set hasCommented = true %}
+                    <h6 class="mb-4 text-center text-uppercase">Vous avez déjà posté un commentaire !</h6>
+                {% endif %}
+            {% endfor %}
+
+            {% if not hasCommented %}
+                <h2 class="mb-4 text-center text-uppercase">Partagez votre avis !</h2>
+                <div class="container col-10 col-lg-6 mb-5">  
+                    {{ form_start(formReview, {'attr' : {'novalidate' : 'novalidate'}}) }}
+                    <div class="row">
+                        <div class= "col col-8 mx-auto">
+                            {{ form_row(formReview.content) }}
+                        </div>
+                        <div class= "col col-6 col-sm-3 mx-auto">
+                            {{ form_row(formReview.rating) }}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        {{ form_widget(formReview) }}
+                        <button class="btn btn-secondary text-white" title="Envoyer mon commentaire">{{ button_label|default("Envoyer") }}</button>
+                    </div>
+                    {{ form_end(formReview) }}
+                </div>
+            {% endif %}
+
+            {% else %}
+                <a href="{{ path('app_user_connexion') }}" class="text-decoration-none" title="Cliquez pour pouvoir vous connecter"><h6 class="mb-4 text-dark text-center text-uppercase">Merci de vous connecter pour poster un commentaire !</h6></a>
+        {% endif %}
+
+    {# Reviews #}
+        {% if beer.reviews is not empty %}
+            <h2 class="mb-4 text-center text-uppercase">Ils ont testé !</h2>
+        {% endif %}
+        
+        <div class="container overflow-hidden">
+            <div class="row gy-3 gy-lg-4">
+                {% for review in beer.reviews %}
+                <div class="col-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-body p-3 p-xl-4">
+                        {# TODO refacto dans un partials #}
+
+                            <div class="d-flex justify-content-between">
+                                <div class="d-flex mb-4 align-items-center" style="color: orange;">
+                                
+                                {% set stars = review.rating %}
+                                {% for i in 1..5 %}
+                                    {% if stars >= 1 %}
+                                        <i class="bi bi-star-fill"></i>
+                                    {% elseif stars > 0 %}
+                                        <i class="bi bi-star-half"></i>
+                                    {% else %}
+                                        <i class="bi bi-star"></i>
+                                    {% endif %}
+                                    {% set stars = stars - 1 %}
+                                {% endfor %}
+
+                                    <span class="ps-1 pt-1">{{ review.rating }}</span>
+                                </div>
+
+                                {% if is_granted("ROLE_USER") %}
+                                    <div>
+                                        {% if review in app.user.reviews %}
+                                            <a href="{{ path('app_review_update', {'beer': beer.id, 'review' : review.id}) }}" class="text-decoration-none">
+                                                <i class="bi bi-pencil-square fs-5 text-secondary" title="Modifier mon avis" role="button"></i>
+                                            </a>
+                                        {% endif %}
+                                        {% if (review in app.user.reviews) or (is_granted("ROLE_ADMIN")) %}
+                                            </a>
+                                        {% endif %}
+                                        {% if (review in app.user.reviews) or (is_granted("ROLE_ADMIN")) %}
+                                            <a href="{{ path('app_review_delete', {'beer': beer.id, 'review' : review.id}) }}" class="text-decoration-none">
+                                                <i class="bi bi-trash fs-5 text-secondary" title="Supprimer l'avis" role="button"></i>
+                                            </a>
+                                        {% endif %}
+                                        {# todo limiter à un signalement #}
+                                        <a href="{{ path('app_review_report', {'beer': beer.id, 'review' : review.id}) }}" class="text-decoration-none">
+                                            <i class="bi bi-exclamation-triangle fs-5 text-warning" title="Signaler cet avis" role="button"></i>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <blockquote class="bsb-blockquote-icon mb-3 overflow-y-auto " style="max-height: 150px">{{review.content}}</blockquote>
+                            
+                            <h4 class="mb-1 h5">{{review.user.username}}</h4>
+                            <span class="text-muted">Publié le</span>
+                            <time datetime="{{review.createdAt|date('d-m-Y')}}" class="fs-6 text-secondary mb-0"> {{review.createdAt|date('d-m-Y')}}</time>
+                            
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}

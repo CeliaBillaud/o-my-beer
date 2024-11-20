@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Toutes les marques - O'My Beer!{% endblock %}
+
+{% block body %}
+
+<h1 class="text-center pt-5">Toutes les marques</h1>
+<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top border-bottom">Dans ce lieu, une variété étourdissante de marques de bière vous attend. Des brasseries artisanales locales aux grands noms internationaux, vous trouverez ici une sélection pour tous les palais. Des blondes légères aux brunes riches en saveur, des IPA houblonnées aux bières fruitées, chaque choix promet une expérience de dégustation unique. Que vous soyez un amateur averti ou un novice curieux, cet endroit est un véritable paradis pour les amoureux de la bière, offrant un voyage sensoriel à travers les différentes traditions brassicoles du monde.</p>
+
+<div class="container mt-4">
+    <div class="container">
+        <div class="row  justify-content-md-around ">
+        {% for brand in brandList %}
+            <div class="col-12 col-md-6 col-xl-3 mb-3 d-flex justify-content-center">
+                <div class="card border-0" style="width: 18rem;">
+                    <div class="bg-white d-flex align-items-center" style="height: 18rem;">
+                        <img data-src="{{ brand.image }}" class="lazy card-img-top" alt="Image de la marque {{ brand.name }}">
+                    </div>
+                    <div class="card-body text-center">
+                        <a href="{{path('app_brand_read', {slug : brand.slug})}}" title="En voir plus sur cette marque" class="stretched-link text-decoration-none text-reset">
+                            <h2 class="card-title ">{{brand.name}}</h2>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div> 
+
+{% if (maxPageCount >= 1) %}
+    {% include 'front/_partials/_pagination.html.twig' with {
+    target_route: app.request.attributes.get('_route'),
+    target_params: app.request.attributes.get('_route_params'), 
+	selectedPage, maxPageCount}
+	 only %}
+{% else %}
+    <p class="text-center text-primary h4 my-5 p-5">Pas de bière enregistrée pour cette marque</p>
+{% endif %}
+
+{% endblock %}

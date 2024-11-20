@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Favoris - O'My Beer!{% endblock %}
+
+{% block body %}
+<h1 class="text-center pt-5">Mes bières favorites</h1>
+<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top border-bottom">Bienvenue dans votre sélection personnelle de bières favorites ! Découvrez les trésors brassicoles qui ont conquis votre palais et capturé votre cœur. Des blondes légères aux brunes riches en caractère, chaque bière est un symbole de vos préférences et de vos aventures gustatives.</p>
+
+<div class="container mt-4">
+    <div class="container">
+        <div class="row  justify-content-md-around ">
+        {% for beer in beerList %}
+            <div class="col-12 col-md-6 col-xl-3 mb-3 d-flex justify-content-center beer-element beer-is-favorite" data-id={{beer.id}}>
+                <div class="card border-0" style="width: 18rem;">
+
+                    {# including favorite and to test button #}
+                    {% include 'front/_partials/_favorite_button.html.twig' %}
+
+                    <a href="{{path('app_beer_read', {id : beer.id})}}" title="En savoir plus sur cette bière" class="text-decoration-none text-reset">
+                        <img data-src="{{ beer.image }}" class="lazy card-img-top"  height="390px" alt="Image de la bière {{ beer.name }}">
+                        <div class="card-body text-center">
+                            <h4 class="card-subtitle mb-2 text-muted text-uppercase">{{beer.brand.name}}</h4>
+                            <h3 class="card-title ">{{beer.name}}</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <div class ="d-flex justify-content-center">
+        <a class="btn btn-nav btn-secondary text-white mb-2 mb-lg-0 me-lg-2 d-flex justify-content-center" role="button" title="Supprimer tous mes favoris" href="{{ path('app_favorite_empty')}}">Supprimer mes favoris</a>
+    </div>
+</div> 
+{% endblock %}

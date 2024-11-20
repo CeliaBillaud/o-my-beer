@@ -1,0 +1,17 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Ajouter une bière{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center align-items-center m-5 gap-5">
+    <a href="{{ path('app_back_beer_list') }}">
+        <i class="bi bi-arrow-left-circle fs-2" title="Retour"></i>
+    </a>
+    <h1 class="text-white text-center m-0">Ajouter une bière</h1>
+</div>
+
+<div class="mx-auto p-2 col-lg-3 col-md-6 text-primary">
+    {{ include('back/beer/_form.html.twig', {'button_label': 'Valider'}) }}
+</div>
+
+{% endblock %}

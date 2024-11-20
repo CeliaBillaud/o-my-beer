@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation mot de passe - O'My Beer!{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+<div class="d-flex justify-content-center mt-4">
+    <img data-src="{{ asset('assets/img/ble.webp')}}" class="lazy img-fluid" alt="Logo" style="height: 80px; transform: rotate(-45deg)">
+    <h1 class=" mt-4 mx-4 pt-2">Réinitialiser votre mot de passe</h1>
+    <img data-src="{{ asset('assets/img/ble.webp')}}" class="lazy img-fluid" alt="Logo" style="height: 80px; transform: rotate(45deg)">
+</div>
+
+<div class="container mx-auto align-middle my-3 col-lg-3 col-sm-10 mt-5">
+    {{ form_start(requestForm) }}
+        {{ form_row(requestForm.email) }}
+        <div>
+            <small>
+                Entrez votre adresse email, nous vous enverrons un email avec un lien pour réinitialiser votre mot de passe.
+            </small>
+        </div>
+        <button class="btn btn-secondary mt-3" title="Recevoir le mail">Recevoir le mail</button>
+    {{ form_end(requestForm) }}
+</div>
+
+{% endblock %}

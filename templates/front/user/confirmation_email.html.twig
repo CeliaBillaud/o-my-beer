@@ -1,0 +1,33 @@
+{% apply inline_css %}
+
+<style>
+    h1 {
+        color: #007560;
+    }
+
+    footer {
+        font-weight: bold;
+    }
+    
+</style>
+
+<h1>Bonjour !</h1>
+
+<p>
+    Merci de confirmer votre email en cliquant sur le lien ci-dessous : <br>
+    <a href="{{ signedUrl|raw }}">Confirmer mon Email</a>.<br>
+    Ce lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
+</p>
+
+<p>
+    Santé !
+</p>
+
+<footer>
+L'équipe O'My Beer
+<br>
+{# @images refers to the twig namespace for images defined in twig.yaml #}
+<img width="250" src="{{ email.image('@images/logo.webp') }}" alt="Logo O'My Beer">
+</footer>
+
+{% endapply %}

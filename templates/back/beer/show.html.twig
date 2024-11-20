@@ -1,0 +1,83 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}{{ beer.name }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center align-items-center m-5 gap-5">
+        <a href="{{ path('app_back_beer_list') }}">
+            <i class="bi bi-arrow-left-circle fs-2" title="Retour"></i>
+        </a>
+        <h1 class="text-white text-center m-0">{{ beer.name }}</h1>
+    </div>
+        
+
+    <div class="d-flex container gap-3 justify-content-center">
+        <a href="{{ path('app_back_beer_edit', {'id': beer.id}) }}">
+            <button class="btn text-primary"><i class="bi bi-pencil-fill" title="Modifier"></i></button>
+        </a>
+        {{ include('back/beer/_delete_form.html.twig') }}
+    
+    </div>
+    
+    <table class="table-responsive mx-auto table-success text-center text-white align-middle my-3 col-lg-6 col-10" role="presentation">
+        <tbody>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">ID</th>
+                <td>{{ beer.id }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">NOM</th>
+                <td>{{ beer.name }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">STYLE</th>
+                <td>{{ beer.style }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">HOUBLON</th>
+                <td>{{ beer.hop }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">LEVURE</th>
+                <td>{{ beer.yeast }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">MALTS</th>
+                <td>{{ beer.malts }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">AMERTUME</th>
+                <td>{{ beer.ibu }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">ALCOOL</th>
+                <td>{{ beer.alcohol }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">SUCROSITÉ</th>
+                <td>{{ beer.blg }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">NOTE</th>
+                <td>{{ beer.rating }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">MARQUE</th>
+                <td>{{ beer.brand.name }}</td>
+            </tr>
+            <tr class="border-bottom">
+                <th class="text-primary fs-6 fw-normal p-1">TYPE</th>
+                <td>{{ beer.type.name}}</td>
+            </tr>
+            <tr>
+                <th class="text-primary fs-6 fw-normal p-1">IMAGE</th>
+                <td><img src="{{ beer.image }}" alt="Image de la bière {{beer.name}}" class="img-fluid"></td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    
+
+    
+{% endblock %}

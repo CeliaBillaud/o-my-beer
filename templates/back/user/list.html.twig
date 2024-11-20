@@ -1,0 +1,62 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Utilisateurs
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-white text-center m-5">Utilisateurs</h1>
+	<a class="btn btn-nav btn-success border-2 border-light d-flex justify-content-center text-white w-25 mb-3 mx-auto" href="{{ path('app_back_user_new') }}">Nouvel utilisateur</a>
+	<table class="table-responsive mx-auto p-2 col-lg-6 col-10 table-success text-center text-white" role="presentation">
+		<thead>
+			<tr>
+				<th class="text-primary fs-5 p-1">ID</th>
+				<th class="text-primary fs-5 p-1">EMAIL</th>
+				{# ? supprimer le pseudo pour éviter scrollbar en version mobile #}
+				{# <th class="text-primary fs-5 p-1">PSEUDO</th> #}
+				<th class="text-primary fs-5 p-1">ROLES</th>
+				<th class="text-primary fs-5 p-1"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td class="border-top col-2">{{ user.id }}</td>
+					<td class="border-top col-2">{{ user.email }}</td>
+					{# <td class="border-top">{{ user.username }}</td> #}
+					{# Modifies datas for a better mobile display #}
+					{% if "ROLE_ADMIN" in user.roles and "ROLE_USER" in user.roles %}
+					<td class="border-top p-1 col-2">ADMIN, USER</td>
+					{% elseif "ROLE_ADMIN" in user.roles %}
+					<td class="border-top p-1 col-2">ADMIN</td>
+					{% elseif "ROLE_USER" in user.roles %}
+					<td class="border-top p-1 col-2">USER</td>
+					{% else %}
+					<td class="border-top p-1 col-2">Aucun rôle</td>
+					{% endif %}
+					<td class="border-top col-2">
+						<div class="d-flex gap-1 p-0 flex-column flex-sm-row  justify-content-center">
+							<a href="{{ path('app_back_user_show', {'id': user.id}) }}">
+								<button class="btn text-primary"><i class="bi bi-eye-fill" title="Voir"></i></button>
+							</a>
+							<a href="{{ path('app_back_user_edit', {'id': user.id}) }}">
+								<button class="btn text-primary"><i class="bi bi-pencil-fill" title="Modifier"></i></button>
+							</a>
+							{{ include('back/user/_delete_form.html.twig') }}
+						</div>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="11">Pas de résultat</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	{% include 'front/_partials/_pagination.html.twig' with {
+    target_route: app.request.attributes.get('_route'),
+    target_params: app.request.query.all, 
+	selectedPage, maxPageCount}
+	 only %}
+	
+{% endblock %}

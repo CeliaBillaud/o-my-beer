@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{# TODO personnalisé la 404 #}
+{% block title %}Erreur Page non trouvée{% endblock %}
+
+{% block body %}
+<h1 class='text-center mt-4 mb-5 text-uppercase'>Erreur 400cat</h1>
+<div class="mx-auto text-center my-3 col-lg-6 col-sm-10 my-4">
+<p>Oups ! Pas de bières ici !</p> 
+	<img class="img-fluid" style="width: 400px" src="{{ asset('assets/img/404cat.webp') }}" alt="Image de la 404">
+<p class="mt-3"><a href="{{path('app_homepage')}}" class= "text-decoration-none">Revenez sur O'My Beer en cliquant ici</a></p>
+</div>
+
+{# <div class="small font-weight-light text-center text-muted mx-auto my-3 col-lg-6 col-sm-10 mt-5">
+{{ exception.message }}
+</div> #}
+
+{% endblock %}

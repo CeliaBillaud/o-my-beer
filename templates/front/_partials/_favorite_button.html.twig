@@ -1,0 +1,31 @@
+{% if is_granted("ROLE_USER") %}
+    <div class="position-absolute top-0 end-0 bg-white mt-3 ps-1 border rounded-start">
+
+    <i class="bi {{ (beer in app.user.beerFavorite) ? 'bi-heart-fill' : 'bi-heart' }} text-primary favorite-icon pe-auto size-icon" 
+    title="{{ (beer in app.user.beerFavorite) ? 'supprimer des' : 'ajouter aux' }} favoris"
+    tabindex="0" 
+    role="button"
+    style="cursor: pointer;" ></i> 
+
+    <i class="bi {{ (beer in app.user.beerTest) ? 'bi-bookmark-check-fill' : 'bi-bookmark-check' }} text-primary test-icon pe-auto size-icon" 
+    title="{{ (beer in app.user.beerTest) ? 'supprimer des' : 'ajouter aux' }} bières à tester"
+    tabindex="0" 
+    role="button"
+    style="cursor: pointer;" ></i> 
+
+    </div>
+
+
+{% else %}
+    <div class="position-absolute top-0 end-0 bg-white mt-3 ps-1 border rounded-start">
+    <a href="{{ path('app_user_connexion')}}" class="text-decoration-none">
+        <i class="bi bi-heart size-icon" title="ajouter en favoris"></i> 
+    </a>
+
+    <a href="{{ path('app_user_connexion', {id: beer.id})}}" class="text-decoration-none">
+        <i class="bi bi-bookmark-check size-icon" title="ajouter à mes bières à tester"></i>
+    </a>
+    </div>
+{% endif %}
+
+

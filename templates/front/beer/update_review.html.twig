@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon avis - O'My Beer!{% endblock %}
+
+{% block body %}
+
+<div class="container my-4 mx-auto col-10 col-lg-6">
+    <h1 class="mb-4">Modifier votre avis sur la bière : {{ beer.name }}</h1>
+    {{ form_start(formReview, {'attr' : {'novalidate' : 'novalidate'}}) }}
+
+        {{ form_widget(formReview) }}
+        <button class="btn btn-secondary text-white">{{ button_label|default("Envoyer") }}</button>
+        
+    {{ form_end(formReview) }}
+</div>
+
+{% endblock %}

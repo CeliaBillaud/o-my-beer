@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Toutes les bières - O'My Beer!{% endblock %}
+
+{% block body %}
+	
+	{% if ( app.request.query.all['recherche'] is defined ) %}
+		<h1 class="text-center pt-5">Résultat de la recherche :{{ app.request.query.all['recherche'] }}</h1>
+	{% elseif app.request.attributes.get('_route') == "app_beer_type"  %}
+		<h1 class="text-center pt-5">Toutes les bières de la catégorie : {{ type.name }}</h1>
+		<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top border-bottom">{{ typesPresentations[type.name] }}</p>
+	{% else %}
+		<h1 class="text-center pt-5">Toutes les bières</h1>
+		<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top border-bottom">Bienvenue sur O’MyBeer, votre source incontournable pour explorer une sélection variée de bières venues du monde entier. Que vous soyez amateur, passionné ou professionnel, plongez dans notre catalogue et découvrez des saveurs uniques qui éveilleront vos papilles. Avec des brasseries renommées et des marques artisanales, notre plateforme vous offre une expérience de dégustation authentique</p>
+	{% endif %}
+
+	<div class="container mt-4">
+		{# Type filters #}
+		<div class="d-flex justify-content-center gap-2 flex-wrap">
+		{% if ( app.request.query.all['recherche'] is defined ) %}
+		{% else %}
+			{% for type in typeList %}
+				<a class="btn btn-nav btn-secondary text-white mb-2 mr-2" href="{{path('app_beer_type', {id : type.id})}}" title="Filtre {{type.name}}" role="button">{{type.name}}</a>
+			{% endfor %}
+		{% endif %}
+		</div>
+		{# Reset filters #}
+		{% if (app.request.get('_route')) == "app_beer_type" %}
+		<div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
+			<a class="btn btn-nav btn-secondary text-white mb-2 mr-2" href="{{path('app_beer_list')}}" title="Effacer les filtres" role="button">Toutes les bières</a>
+		</div>
+		{% endif %}
+		
+
+		<div class="container mt-4">
+			<div class="row  justify-content-md-start ">
+			{% for beer in beerList %}
+				<div class="col-12 col-md-6 col-xl-3 mb-3 d-flex justify-content-center">
+					<div class="card border-0 beer-element" style="width: 18rem;" data-id={{beer.id}}>
+
+						{# including favorite and to test button #}
+						{% include 'front/_partials/_favorite_button.html.twig' %}
+
+						<a href="{{path('app_beer_read', {id : beer.id})}}" title="En savoir plus sur la bière" class="text-decoration-none text-reset">
+						<img data-src="{{ beer.image }}" class="lazy card-img-top" height="390px" alt="Image de {{ beer.name }}">
+						<div class="card-body text-center">
+							<p class="fs-5 fw-medium card-subtitle  text-muted text-uppercase">{{beer.brand.name}}</p>
+							<p class="fs-4 fw-medium card-title ">{{beer.name}}</p>
+						</div>
+						</a>
+					</div>
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+	</div> 
+
+	{% if (maxPageCount >= 1) %}
+		{% if ('search' in app.current_route ) %}
+			{% include 'front/_partials/_pagination.html.twig' with {
+			target_route: app.request.attributes.get('_route'),
+			target_params: app.request.query.all,
+			selectedPage, maxPageCount}
+			only %}
+		{% else %}
+		{% include 'front/_partials/_pagination.html.twig' with {
+		target_route: app.request.attributes.get('_route'),
+		target_params: app.request.attributes.get('_route_params'),
+		selectedPage, maxPageCount}
+		only %}
+		{% endif %}
+	{% else %}
+		<p class="text-center text-primary h4 my-5 p-5">Aucun résultat pour votre recherche</p>
+	{% endif %}
+
+{% endblock %}

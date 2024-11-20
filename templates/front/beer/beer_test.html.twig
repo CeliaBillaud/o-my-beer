@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes bières à tester - O'My Beer!{% endblock %}
+
+{% block body %}
+<h1 class="text-center pt-5">Mes bières à tester</h1>
+<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top border-bottom">Découvrez votre sélection personnalisée de bières à tester ! Plongez dans un monde de délices brassicoles spécialement choisis pour vous. Des IPA fruitées aux bières artisanales locales, chaque choix est une invitation à explorer de nouveaux horizons gustatifs.</p>
+{# todo afficher messages flashs #}
+
+<div class="container mt-4">
+    <div class="container">
+        <div class="row  justify-content-md-around ">
+        {% for beer in beerList %}
+            <div class="col-12 col-md-6 col-xl-3 mb-3 d-flex justify-content-center beer-element beer-to-test" data-id={{beer.id}}>
+                <div class="card border-0" style="width: 18rem;">
+
+                    {# including favorite and to test button #}
+                    {% include 'front/_partials/_favorite_button.html.twig' %}
+
+                    <a href="{{path('app_beer_read', {id : beer.id})}}" title="En savoir plus sur cette bière" class="text-decoration-none text-reset">
+                        <img data-src="{{ beer.image }}" class="lazy card-img-top"  height="390px" alt="Image de la bière {{ beer.name }}">
+                        <div class="card-body text-center">
+                            <h4 class="card-subtitle mb-2 text-muted text-uppercase">{{beer.brand.name}}</h4>
+                            <h3 class="card-title ">{{beer.name}}</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <div class ="d-flex justify-content-center">
+            <a class="btn btn-nav btn-secondary text-white mb-2 mb-lg-0 me-lg-2 d-flex justify-content-center" role="button" title="Supprimer toutes mes bières à tester" href="{{ path('app_test_empty')}}">J'ai tout bu ! Vider la liste</a>
+        </div>
+    </div>
+</div> 
+
+{% endblock %}

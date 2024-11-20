@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos - O'My Beer{% endblock %}
+
+{% block body %}
+<h1 class= "text-center mt-4 mb-5 text-uppercase pt-5">À propos de O'My Beer !</h1>
+
+<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top">Ce site a été réalisé dans le cadre d'un projet de fin de formation au sein de l'école O'Clock, ayant pour objectif de mettre en pratique les compétences acquises lors de notre formation en développement full stack PHP. Notre équipe était composée de quatre développeurs full stack spécialisés dans le framework Symfony.</p>
+<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-bottom">Ensemble, nous avons travaillé sur chaque aspect du projet, depuis la conception jusqu'à la mise en œuvre, en passant par le développement et les tests. Notre collaboration nous a permis de combiner nos connaissances et notre expertise afin de créer un site fonctionnel et bien conçu. Ce projet nous a offert une occasion précieuse d'appliquer nos compétences dans un environnement réel, tout en nous permettant de développer notre capacité à travailler en équipe et à résoudre des problèmes de manière collaborative.</p>
+
+<div class="d-flex gap-3 p-0 flex-column flex-md-row mt-5 justify-content-center">
+    <div class="d-flex flex-column text-center">
+        <img data-src="{{ asset('assets/img/antho.webp') }}" class="lazy mx-auto" alt="Portrait de Anthony" height="250" width="200">
+        <span><b>Anthony</b></span>
+        <em>Développeur web</em>
+        <em>Scrum Master</em>
+    </div>
+    <div class="d-flex flex-column text-center">
+        <img data-src="{{ asset('assets/img/celia.webp') }}" class="lazy mx-auto" alt="Portrait de Célia" height="250" width="200">
+        <span><b>Célia</b></span>
+        <em>Développeuse web</em>
+        <em>Product Owner</em>
+    </div>
+    <div class="d-flex flex-column text-center">
+        <img data-src="{{ asset('assets/img/marion.webp') }}" class="lazy mx-auto" alt="Portrait de Marion" height="250" width="200">
+        <span><b>Marion</b></span>
+        <em>Développeuse web</em>
+        <em>Lead Back</em>
+    </div>
+    <div class="d-flex flex-column text-center">
+        <img data-src="{{ asset('assets/img/fanny.webp') }}" class="lazy mx-auto" alt="Portrait de Fanny" height="250" width="200">
+        <span><b>Fanny</b></span>
+        <em>Développeuse web</em>
+        <em>Lead Front</em>
+    </div>
+</div>
+
+{% endblock %}

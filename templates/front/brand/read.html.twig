@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{brand.name}} - O'My Beer!{% endblock %}
+
+{% block body %}
+{# Brand card #}
+
+<div class="mx-auto border-secondary mt-5 mb-5 m-auto card mb-3 bg-white " style="max-width: 900px;">
+    <div class="m-5 row g-0">
+        <div class="col-md-4 d-flex justify-content-center">
+            <img data-src="{{brand.image}}" class="lazy img-fluid rounded-start" alt="Logo de la marque {{brand.name}}">
+        </div>
+        <div class="col-md-8 d-flex justify-content-center">
+            <div class="card-body">
+                <a href="{{path('app_brand_read', {slug : brand.slug})}}" title="Revenir sur la page de la marque {{brand.name}}" class="stretched-link text-decoration-none text-reset">
+                <h1 class="card-title">{{brand.name}}</h1>
+                </a>
+                <p class="card-text"><small class="text-body-secondary">{{brand.country}}, créée en {{ brand.foundedIn|date('Y') }}</small></p>    
+                <p class="card-text">{{brand.description}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if app.request.attributes.get('_route') == "app_brand_type_brand"  %}
+		<h1 class="text-center pt-5">Toutes les bières de la catégorie : {{ type.name }}</h1>
+		<p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top border-bottom">{{ typesPresentations[type.name] }}</p>
+	{% else %}
+		<h1 class="text-center pt-5">Toutes les bières de la marque {{ brand.name }}</h1>
+		{# <p class="mx-auto col-11 col-md-8 text-center m-3 pt-3 pb-3 border-secondary border-top border-bottom">Bienvenue sur O’MyBeer, votre source incontournable pour explorer une sélection variée de bières venues du monde entier. Que vous soyez amateur, passionné ou professionnel, plongez dans notre catalogue et découvrez des saveurs uniques qui éveilleront vos papilles. Avec des brasseries renommées et des marques artisanales, notre plateforme vous offre une expérience de dégustation authentique</p> #}
+	{% endif %}
+
+<div class="container mt-4">
+    {# Type filters #}
+    <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
+        {% for type in typeList %}
+        <a class="btn btn-nav btn-secondary  text-white mb-2 mr-2" role="button" title="Trier par {{type.name}}" href="{{path('app_brand_type_brand', {typeId : type.id, brandId : brand.id})}}">{{type.name}}</a>
+        {% endfor %}
+    </div>
+    {% if (app.request.get('_route')) == "app_brand_type_brand" %}
+		<div class="d-flex justify-content-center gap-2 flex-wrap mb-4">
+		<a class="btn btn-nav btn-secondary text-white mb-2 mr-2" role="button" title="Effacer les filtres" href="{{path('app_brand_read', {slug : brand.slug})}}">Toutes les bières</a>
+		</div>
+	{% endif %}
+    
+    {# Beer List #}
+    <div class="container">
+        <div class="row  justify-content-md-around ">
+        {% for beer in beerList %}
+            <div class="col-12 col-md-6 col-xl-3 mb-3 d-flex justify-content-center">
+                <div class="card border-0 beer-element" style="width: 18rem;" data-id={{beer.id}}>
+
+                    {# including favorite and to test button #}
+                    {% include 'front/_partials/_favorite_button.html.twig' %}
+
+                    <a href="{{path('app_beer_read', {id : beer.id})}}" title="En voir plus sur la bière {{ beer.name }}"class="text-decoration-none text-reset">
+                        <img data-src="{{ beer.image }}" class="lazy card-img-top" alt="Image de {{ beer.name }}" height="390px">
+                        <div class="card-body text-center">
+                            <p class="fs-5 fw-medium card-subtitle text-muted text-uppercase">{{beer.brand.name}}</p>
+                            <p class="fs-4 fw-medium card-title ">{{beer.name}}</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+</div> 
+
+{% if (maxPageCount >= 1) %}
+    {% include 'front/_partials/_pagination.html.twig' with {
+    target_route: app.request.attributes.get('_route'),
+    target_params: app.request.attributes.get('_route_params'), 
+	selectedPage, maxPageCount}
+	only %}
+{% else %}
+    <p class="text-center text-primary h4 my-5 p-5">Pas de bière enregistrée pour cette marque</p>
+{% endif %}
+{% endblock %}

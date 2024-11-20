@@ -1,0 +1,51 @@
+{% extends 'base_back.html.twig' %}
+
+{% block title %}Commentaires Signalés
+{% endblock %}
+
+{% block body %}
+	<h1 class="text-white text-center m-5">Commentaires signalés</h1>
+	<table class="table-responsive mx-auto p-1 col-lg-6 col-10 table-success text-center text-white" role="presentation">
+		<thead>
+			<tr>
+				<th class="text-primary fs-6 p-1">ID</th>
+				<th class="text-primary fs-6 p-1">AUTEUR</th>
+				<th class="text-primary fs-6 p-1">CONTENU</th>
+                <th class="text-primary fs-6 p-1">SIGNALÉS</th>
+				<th class="text-primary fs-6"></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for review in reviews %}
+				<tr>
+					<td class="border-top col-1 col-md-2">{{ review.id }}</td>
+					<td class="border-top col-1 col-md-2">{{ review.user.username }}</td>
+					<td class="border-top col-2 col-md-4 text-truncate" style="max-width: 30vw"> {{ review.content }} </td>
+                    <td class="border-top col-1 col-md-2 ">{{ review.reportCount }} fois</td>
+					<td class="border-top col-1">
+						<div class="d-flex gap-1 p-0 flex-column flex-sm-row  justify-content-center">
+							<a href="{{ path('app_review_reset', {'id': review.id}) }}">
+								<button class="btn text-primary"><i class="bi bi-arrow-clockwise" title="Reset"></i></button>
+							</a>
+							<a href="{{ path('app_back_review_show', {'id': review.id}) }}">
+								<button class="btn text-primary"><i class="bi bi-eye-fill" title="Voir"></i></button>
+							</a>
+							{{ include('back/review/_delete_form.html.twig') }}
+						</div>
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% if (maxPageCount >= 1) %}
+	
+	{% include 'front/_partials/_pagination.html.twig' with {
+    target_route: app.request.attributes.get('_route'),
+    target_params: app.request.query.all, 
+	selectedPage, maxPageCount}
+	 only %}
+	{% else %}
+		<p class="text-center text-primary h4 my-5 p-5">Aucun résultat</p>
+	{% endif %}
+
+{% endblock %}
